@@ -60,14 +60,13 @@
                         <option value="AES">AES</option>
                         <option value="RC4">RC4</option>
                         <option value="Blowfish">Blowfish</option>
-                        <option value="RSA">RSA</option>
                         <option value="TripleDES">TripleDes</option>
                     </select>
                     <label for="floatingSelect">Choose algorithm</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="text" readonly class="form-control-plaintext bg-dark text-white" id="floatingPlaintextInput"
-                              placeholder="Last result" value="${result}">
+                    <textarea readonly class="form-control-plaintext bg-dark text-white" id="floatingPlaintextInput"
+                              placeholder="Last result" style="height: 250px">${result}</textarea>
                     <label for="floatingPlaintextInput">Last Result</label>
                 </div>
                 <div class="row">

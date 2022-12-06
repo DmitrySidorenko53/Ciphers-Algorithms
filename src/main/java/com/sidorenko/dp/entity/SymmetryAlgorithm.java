@@ -3,6 +3,7 @@ package com.sidorenko.dp.entity;
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -12,19 +13,14 @@ public class SymmetryAlgorithm extends EncryptionAlgorithm {
     private SecretKey key;
     private final static String NULL_INPUT_MESSAGE = "PASSED STRING IS EMPTY";
 
-    public SymmetryAlgorithm(String algorithmTitle, Integer keySize) {
+    public SymmetryAlgorithm(String algorithmTitle, Integer keySize) throws NoSuchAlgorithmException {
         super(algorithmTitle, keySize);
-    }
-
-    @Override
-    public void initData() throws NoSuchAlgorithmException, NoSuchPaddingException {
         KeyGenerator keyGenerator = KeyGenerator.getInstance(
                 String.valueOf(super.getAlgorithmTitle())
         );
         keyGenerator.init(super.getKeySize());
         key = keyGenerator.generateKey();
     }
-
     @Override
     public String executeEncryption(Object message) throws InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
@@ -32,7 +28,7 @@ public class SymmetryAlgorithm extends EncryptionAlgorithm {
         super.setCipher(Cipher.getInstance(super.getAlgorithmTitle()));
         super.getCipher().init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedBytes = super.getCipher().doFinal(
-                String.valueOf(message).getBytes()
+                String.valueOf(message).getBytes(StandardCharsets.UTF_8)
         );
         return Base64.getEncoder().encodeToString(encryptedBytes);
     }
@@ -45,6 +41,6 @@ public class SymmetryAlgorithm extends EncryptionAlgorithm {
         byte[] decryptedBytes = super.getCipher().doFinal(
                 Base64.getDecoder().decode(encryptedMessage.toString())
         );
-        return new String(decryptedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
     }
 }

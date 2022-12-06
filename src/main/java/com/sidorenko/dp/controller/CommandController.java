@@ -34,7 +34,7 @@ public class CommandController extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp){
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             processRequest(req, resp);
         } catch (IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException | NoSuchAlgorithmException |
@@ -48,8 +48,15 @@ public class CommandController extends HttpServlet {
         String commandName = req.getParameter("command");
         Command command = commandProvider.getCommand(commandName.toUpperCase());
         String response = command.execute(req, resp);
-        req.setAttribute("result", response);
+        req.setAttribute("result", getResult(req, response));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index");
         dispatcher.forward(req, resp);
+    }
+
+    private String getResult(HttpServletRequest request, String result) {
+        StringBuilder buffer = new StringBuilder();
+        buffer.append("Input message : ").append(request.getParameter("inputdata")).append("\n")
+                .append("Algorithm : ").append(request.getParameter("title")).append("\n").append("Result : ").append(result);
+        return new String(buffer);
     }
 }

@@ -19,7 +19,6 @@ public class EncryptCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IllegalBlockSizeException,
             NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
         EncryptionAlgorithm algorithm = algorithmProvider.getAlgorithm(request.getParameter("title"));
-        algorithm.initData();
         String dataToEncrypt = request.getParameter("inputdata");
         return algorithm.executeEncryption(dataToEncrypt);
     }

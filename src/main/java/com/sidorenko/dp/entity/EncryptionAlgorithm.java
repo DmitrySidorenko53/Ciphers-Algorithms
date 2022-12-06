@@ -46,8 +46,6 @@ public abstract class EncryptionAlgorithm {
         return keySize;
     }
 
-    public abstract void initData() throws NoSuchAlgorithmException, NoSuchPaddingException;
-
     public abstract String executeEncryption(Object message) throws InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 

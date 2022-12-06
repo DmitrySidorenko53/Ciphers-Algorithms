@@ -20,7 +20,6 @@ public class DecryptCommand implements Command {
             NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException,
             InvalidKeyException, InvalidAlgorithmParameterException {
         EncryptionAlgorithm algorithm = algorithmProvider.getAlgorithm(request.getParameter("title"));
-        algorithm.initData();
         String dataToEncrypt = request.getParameter("inputdata");
         return algorithm.executeDecryption(dataToEncrypt);
     }
