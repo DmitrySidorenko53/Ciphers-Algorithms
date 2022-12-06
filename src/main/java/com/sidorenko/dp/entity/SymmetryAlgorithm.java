@@ -23,13 +23,13 @@ public class SymmetryAlgorithm extends EncryptionAlgorithm {
         );
         keyGenerator.init(super.getKeySize());
         key = keyGenerator.generateKey();
-        super.setCipher(Cipher.getInstance(super.getAlgorithmTitle()));
     }
 
     @Override
     public String executeEncryption(Object message) throws InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         if (message == null || message.toString().isEmpty()) return NULL_INPUT_MESSAGE;
+        super.setCipher(Cipher.getInstance(super.getAlgorithmTitle()));
         super.getCipher().init(Cipher.ENCRYPT_MODE, key);
         byte[] encryptedBytes = super.getCipher().doFinal(
                 String.valueOf(message).getBytes()
@@ -40,9 +40,10 @@ public class SymmetryAlgorithm extends EncryptionAlgorithm {
     @Override
     public String executeDecryption(Object encryptedMessage) throws InvalidKeyException, IllegalBlockSizeException, BadPaddingException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         if (encryptedMessage == null || encryptedMessage.toString().isEmpty()) return NULL_INPUT_MESSAGE;
+        super.setCipher(Cipher.getInstance(super.getAlgorithmTitle() + "/ECB/NoPadding"));
         super.getCipher().init(Cipher.DECRYPT_MODE, key);
         byte[] decryptedBytes = super.getCipher().doFinal(
-                String.valueOf(encryptedMessage).getBytes()
+                Base64.getDecoder().decode(encryptedMessage.toString())
         );
         return new String(decryptedBytes);
     }

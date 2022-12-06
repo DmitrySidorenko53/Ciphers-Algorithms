@@ -27,6 +27,7 @@ public class AsymmetricAlgorithm extends EncryptionAlgorithm {
         privateKey = keyPair.getPrivate();
         publicKey = keyPair.getPublic();
         super.setCipher(Cipher.getInstance(super.getAlgorithmTitle()));
+
     }
 
     @Override
@@ -46,7 +47,7 @@ public class AsymmetricAlgorithm extends EncryptionAlgorithm {
         if (encryptedMessage == null || encryptedMessage.toString().isEmpty()) return NULL_INPUT_MESSAGE;
         super.getCipher().init(Cipher.DECRYPT_MODE, publicKey);
         byte[] decryptedBytes = super.getCipher().doFinal(
-                String.valueOf(encryptedMessage).getBytes()
+                Base64.getDecoder().decode(encryptedMessage.toString())
         );
         return new String(decryptedBytes);
     }
