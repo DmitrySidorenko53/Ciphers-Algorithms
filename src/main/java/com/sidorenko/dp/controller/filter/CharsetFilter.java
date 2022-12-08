@@ -1,10 +1,12 @@
 package com.sidorenko.dp.controller.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.LogRecord;
 
+@WebFilter
 public class CharsetFilter implements Filter {
     private String encoding;
 
@@ -26,6 +28,5 @@ public class CharsetFilter implements Filter {
 
     @Override
     public void destroy() {
-
     }
 }

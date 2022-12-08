@@ -45,18 +45,23 @@ public class CommandController extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IllegalBlockSizeException,
             NoSuchPaddingException, BadPaddingException, NoSuchAlgorithmException, InvalidKeyException, ServletException, IOException, InvalidAlgorithmParameterException {
+        long startTime = System.currentTimeMillis();
         String commandName = req.getParameter("command");
         Command command = commandProvider.getCommand(commandName.toUpperCase());
         String response = command.execute(req, resp);
-        req.setAttribute("result", getResult(req, response));
+        long endTime = System.currentTimeMillis();
+        long duration = (endTime - startTime);
+        req.setAttribute("result", getResult(req, response, duration));
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index");
         dispatcher.forward(req, resp);
     }
 
-    private String getResult(HttpServletRequest request, String result) {
+    private String getResult(HttpServletRequest request, String result, Long duration) {
         StringBuilder buffer = new StringBuilder();
-        buffer.append("Input message : ").append(request.getParameter("inputdata")).append("\n")
-                .append("Algorithm : ").append(request.getParameter("title")).append("\n").append("Result : ").append(result);
+        buffer.append("Input message : ").append(request.getParameter("inputdata"))
+                .append("\nAlgorithm : ").append(request.getParameter("title"))
+                .append("\nResult : ").append(result)
+                .append("\nDuration : ").append(duration).append("ms");
         return new String(buffer);
     }
 }
